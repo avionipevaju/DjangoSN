@@ -1,0 +1,72 @@
+
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SN Dashboard</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<div id="headingPadding">
+
+		<h1 id="title">SN Dashboard</h1>
+	
+	
+	</div>
+
+	<div id="mainPadding">
+
+	<div id="formPadding">
+		{% block content %}
+
+		<p>Welcome {{username}}</p>
+
+		<form action="/create/" method="post" id="creator">{% csrf_token %}
+			<input type="text" name="post" id="postCreator"><br>
+			<input type="submit" name="submit" value="Share Post">
+
+		</form><br>
+
+		<a href="/index/" id="signup">Logout</a>
+		<a href="/profile/" id="signup">Profile</a>
+
+		<div id="mainDash">
+			<table id="lajna" >
+			{% for post in post_list %}
+			<form action="#" method="post">{% csrf_token %}
+			<input type="hidden" name="id" value={{post.id}}>
+				<tr class="post">
+					<td rowspan="3" id="thumbtd"><img src={{post.get_avatar}} id="thumb"></td>
+					<td>{{post.get_username}}</td>
+				</tr>
+
+				<tr class="post">
+					<td>{{post.content}}</td>
+				</tr>
+				<tr class="post">
+					<td>{{post.timestamp}}</td>
+				</tr>
+				<tr class="like">
+					<td colspan="2"> {{post.likes}}
+					<input type="submit" name="like" value="Like!"> 
+					</td>
+				</tr>
+				<tr><td id='divider'></td><td id='divider'></td></tr>
+				</form>
+			{% endfor %}
+			</table>
+		</div>
+		
+
+		{% endblock %}
+	
+
+		</form>
+
+	</div>
+	</div>
+
+
+</body>
+</html>

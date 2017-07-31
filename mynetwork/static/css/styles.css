@@ -1,0 +1,167 @@
+#title{
+	color: #193B50;
+	font-family: "Palatino Linotype";
+	text-align: center;
+
+}
+
+#logo{
+	display: inline-block;
+	width: 27%;
+	margin-top: 0.2%;
+}
+
+
+#mainPadding{
+ 	padding-top: 5%;
+ 	padding-left: 5%;
+ 	padding-right: 5%;
+}
+
+#mainPaddingAnketa{
+ 	margin-top: 2%;
+ 	border:solid #193B50;
+}
+
+
+.loginTable{
+	margin:auto;
+}
+
+input[type="text"]
+{
+    font-size:14px;
+    font-family: "Palatino Linotype";
+    color:#193B50;
+    margin: auto;
+    display: block;
+    align-content: center;
+}
+
+input[type="password"]
+{
+    font-size:14px;
+    font-family: "Palatino Linotype";
+    color: #193B50;
+    margin: auto;
+    display: block;
+    align-content: center;
+}
+
+input[type="submit"]{
+	  margin: auto;
+    display: block;
+    align-content: center;
+
+}
+
+.field{
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	border-bottom: inset #193B50;
+
+}
+
+td{
+	color:#193B50;
+}
+
+#welcomeP{
+	display: inline-block;
+	margin-left: 5%;
+	margin-top: 5%;
+	vertical-align: top;
+	font-family: "Palatino Linotype";
+	color: #193B50;
+}
+
+#buttonCell{
+	text-align: center;
+	padding: 7px;
+}
+
+#innerPadding{
+	margin-top: 1%;
+}
+
+#formPadding{
+	margin: auto;
+	width: 50%;
+	padding: 30px;
+	border: solid #193B50;
+	
+}
+
+
+#headingPadding{
+	border: solid #193B50;
+	background-color:#B3C6C8;
+	align-content: center;
+	width: 50%;
+	margin: auto;
+}
+
+
+#logoutRef{
+	font-size: 16px;
+	font-family: "Palatino Linotype";
+}
+
+#selected{
+	text-align: center;
+	font-family: "Palatino Linotype";
+	color: #193B50;
+}
+
+
+#error{
+	font-size: 14px;
+	color: red;
+	text-align: center;
+}
+
+#signup{
+	margin-left: 85%;
+}
+
+#avatar{
+	margin:auto;
+	display: block;
+	width:30%;
+	height:30%;
+}
+
+#postCreator{
+	width: 80%;
+	padding: 4%;
+}
+
+
+#lajna{
+	border: solid #193B50;
+}
+
+#divider{
+	border-top: solid #193B50;
+}
+
+#thumb{
+	width:100%;
+	height:100%;
+	padding: 1%;
+	margin: auto;
+}
+
+#thumbtd{
+	width: 14%;
+	margin: auto;
+
+}
+
+.like{
+	width: 50%;
+	text-align: center;
+	margin: auto;
+
+}

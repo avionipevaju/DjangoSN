@@ -1,0 +1,53 @@
+
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SN Profile</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<div id="headingPadding">
+
+		<h1 id="title">SN Profile</h1>
+	
+	
+	</div>
+
+	<div id="mainPadding">
+
+	<div id="formPadding">
+		{% block content %}
+		<img id="avatar" src={{avatar}} >
+		<table class="loginTable">
+			<tr>
+				<td>Username:</td>
+				<td>{{username}}</td>
+			</tr>
+			<tr>
+				<td>E-mail:</td>
+				<td>{{email}}</td>
+			</tr>
+			<tr>
+				<td>Full Name:</td>
+				<td>{{full_name}}</td>
+			</tr>
+			<tr>
+				<td>Location:</td>
+				<td>{{location}}</td>
+			</tr>
+			{% endblock %}
+
+		</table>
+		<a href="/dashboard/" id="signup">Dashboard</a>
+
+
+		</form>
+
+	</div>
+	</div>
+
+
+</body>
+</html>

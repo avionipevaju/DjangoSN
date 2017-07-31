@@ -1,0 +1,50 @@
+
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SN Home</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+<div id="headingPadding">
+
+		<h1 id="title">Welcome to SN</h1>
+	
+	
+	</div>
+
+	<div id="mainPadding">
+
+	<div id="formPadding">
+		<form id="loginForm" method="post" action="#">{% csrf_token %}
+		<table class="loginTable">
+			<tr>
+				<td>E-mail:</td>
+				<td><input class="field" type="text" name="email" ></td>
+			</tr>
+			<tr>
+				<td>Username:</td>
+				<td><input class="field" type="text" name="username" ></td>
+			</tr>
+			<tr>
+				<td>Password: </td>
+				<td><input class="field" type="password" name="password"></td>
+			</tr>
+			<tr><td id="buttonCell" colspan="2"><input type="submit" name="submit" value="Sign Up"></td></tr>
+			<tr><td colspan="2" id='error'>{% block content %}{{error}}{% endblock %}</td></tr>
+			
+
+		</table>
+		<a href="/users/" id="signup">Sign up</a>
+
+
+		</form>
+
+	</div>
+	</div>
+
+
+</body>
+</html>
