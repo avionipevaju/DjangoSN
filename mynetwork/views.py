@@ -1,14 +1,11 @@
 from datetime import datetime
-from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.response import Response
 from django.shortcuts import render,redirect
-from django.http import Http404
 from django.db import IntegrityError
 from django.http import HttpResponse
 from pyhunter import PyHunter
 import clearbit
-from .models import UserProfile,Post
+from .models import UserProfile,Post,Likes
 from .serializers import UserSerializer,PostSerializer
 
 class Home(APIView):
@@ -101,7 +98,17 @@ class Dashboard(APIView):
 
     def post(self,request):
         post = Post.objects.get(id=request.POST['id'])
-        post.likes = post.likes+1
+        current_user=request.session.get('user')
+        user = UserProfile.objects.get(id=current_user['id'])
+
+        try:
+            like=Likes.objects.get(post=post, liked_by=user)
+            post.like_count = post.like_count - 1
+            like.delete()
+        except Likes.DoesNotExist:
+            like = Likes(post=post, liked_by=user)
+            post.like_count = post.like_count + 1
+            like.save()
         post.save()
         return redirect('dashboard')
 

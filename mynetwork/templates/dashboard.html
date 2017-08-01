@@ -41,15 +41,15 @@
 					<td>{{post.get_username}}</td>
 				</tr>
 
-				<tr class="post">
+				<tr>
 					<td>{{post.content}}</td>
 				</tr>
-				<tr class="post">
+				<tr>
 					<td>{{post.timestamp}}</td>
 				</tr>
-				<tr class="like">
-					<td colspan="2"> {{post.like_count}}
-					<input type="submit" name="like" value="Like!"> 
+				<tr>
+					<td style="white-space: nowrap;" id="like" colspan="2"> {{post.like_count}}
+					<input type="submit" name="like" value="Like/Unlike!"> 
 					</td>
 				</tr>
 				<tr><td id='divider'></td><td id='divider'></td></tr>

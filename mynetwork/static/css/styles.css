@@ -49,8 +49,7 @@ input[type="password"]
 }
 
 input[type="submit"]{
-	  margin: auto;
-    display: block;
+	margin: auto;
     align-content: center;
 
 }
@@ -159,9 +158,6 @@ td{
 
 }
 
-.like{
-	width: 50%;
+#like{
 	text-align: center;
-	margin: auto;
-
 }
