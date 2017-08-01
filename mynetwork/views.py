@@ -10,6 +10,10 @@ from .serializers import UserSerializer,PostSerializer
 
 class Home(APIView):
    def get(self, request):
+
+       if request.session.get('user') != None:
+           return redirect('dashboard')
+
        error = request.session.get('error')
        if error != None:
            return render(request, 'index.html', {'error':error})
@@ -92,6 +96,10 @@ class Login(APIView):
 
 class Dashboard(APIView):
     def get(self, request):
+        if request.GET.get('logout',False) != False:
+            request.session['user'] = None
+            return redirect('index')
+
         currentUser = request.session.get('user')
         post_list = Post.objects.all()
         return render(request, 'dashboard.html', {'post_list': post_list, 'username': currentUser['username'],'avatar':currentUser['avatar']})
@@ -100,7 +108,6 @@ class Dashboard(APIView):
         post = Post.objects.get(id=request.POST['id'])
         current_user=request.session.get('user')
         user = UserProfile.objects.get(id=current_user['id'])
-
         try:
             like=Likes.objects.get(post=post, liked_by=user)
             post.like_count = post.like_count - 1
