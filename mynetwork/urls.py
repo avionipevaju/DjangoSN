@@ -11,7 +11,6 @@ urlpatterns = [
     url(r'^dashboard/$',views.Dashboard.as_view(),name='dashboard'),
     url(r'^profile/$',views.Profile.as_view(),name='profile'),
     url(r'create/$',views.CreatePost.as_view()),
-    url(r'like/$',views.LikePost.as_view()),
     url(r'^$', views.Home.as_view()),
 ]
 
