@@ -1,5 +1,9 @@
 from datetime import datetime
 from rest_framework.views import APIView
+from rest_framework_jwt.settings import api_settings
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.shortcuts import render,redirect
 from django.db import IntegrityError
 from django.http import HttpResponse
@@ -76,6 +80,9 @@ class Profile(APIView):
             'location': currentUser['location'], 'avatar': currentUser['avatar'],'username': currentUser['username']})
 
 class Login(APIView):
+    #permission_classes = (IsAuthenticated,)
+    #authentication_classes = (JSONWebTokenAuthentication,)
+
     def post(self, request):
         try:
            user = UserProfile.objects.get(username=request.POST['username'])

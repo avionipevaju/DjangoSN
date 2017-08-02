@@ -5,6 +5,8 @@
 <head>
 	<title>SN Home</title>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+	<script type="text/javascript" src="{% static 'script/script.js' %}"></script>
+	<script type="text/javascript" src="{% static 'script/jquery-3.2.1.min.js' %}"></script>
 </head>
 <body>
 
@@ -18,15 +20,15 @@
 	<div id="mainPadding">
 
 	<div id="formPadding">
-		<form id="loginForm" method="post" action="/login/">{% csrf_token %}
+		<form id="loginForm" method="post" action='/login/'>{% csrf_token %}
 		<table class="loginTable">
 			<tr>
 				<td>Username:</td>
-				<td><input class="field" type="text" name="username" ></td>
+				<td><input class="field" type="text" name="username" id="username"></td>
 			</tr>
 			<tr>
 				<td>Password: </td>
-				<td><input class="field" type="Password" name="password"></td>
+				<td><input class="field" type="Password" name="password" id="password"></td>
 			</tr>
 			<tr><td id="buttonCell" colspan="2"><input type="submit" name="submit" value="Login"></td></tr>
 			<tr><td colspan="2" id='error'>{% block content %}{{error}}{% endblock %}</td></tr>
