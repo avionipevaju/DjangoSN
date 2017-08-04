@@ -64,7 +64,7 @@ class Signup(APIView):
                     new_user.save()
                 except IntegrityError:
                     return render(request, 'signup.html', {'error': 'User with the same username or email alerady exists'})
-                return redirect('profile')
+                return redirect('index')
             else:
                 return HttpResponse('NOT FOUND')
         else:
@@ -90,7 +90,7 @@ class Login(APIView):
             request.session['error'] = 'Not registered. Please Sign up'
             return redirect('index')
 
-        success=user.check_password(request.POST['password'])
+        success = user.check_password(request.POST['password'])
 
         if success:
             serializer = UserSerializer(user)
