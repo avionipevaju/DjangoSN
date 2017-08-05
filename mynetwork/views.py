@@ -115,6 +115,8 @@ class Dashboard(APIView):
         post = Post.objects.get(id=request.POST['id'])
         current_user=request.session.get('user')
         user = UserProfile.objects.get(id=current_user['id'])
+        if post.creator == user:
+            return redirect('dashboard')
         try:
             like=Likes.objects.get(post=post, liked_by=user)
             post.like_count = post.like_count - 1
