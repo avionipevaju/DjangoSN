@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class UserProfile(User):
     location = models.CharField(max_length=64)
     avatar = models.CharField(max_length=1024)
@@ -21,6 +22,7 @@ class Post(models.Model):
     class Meta:
         ordering = ['-timestamp']
 
-class Likes(models.Model):
+
+class Like(models.Model):
     post = models.ForeignKey(Post)
     liked_by = models.ForeignKey(UserProfile)

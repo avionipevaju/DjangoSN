@@ -9,7 +9,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse
 from pyhunter import PyHunter
 import clearbit
-from .models import UserProfile,Post,Likes
+from .models import UserProfile,Post,Like
 from .serializers import UserSerializer,PostSerializer
 
 class Home(APIView):
@@ -118,11 +118,11 @@ class Dashboard(APIView):
         if post.creator == user:
             return redirect('dashboard')
         try:
-            like=Likes.objects.get(post=post, liked_by=user)
+            like=Like.objects.get(post=post, liked_by=user)
             post.like_count = post.like_count - 1
             like.delete()
-        except Likes.DoesNotExist:
-            like = Likes(post=post, liked_by=user)
+        except Like.DoesNotExist:
+            like = Like(post=post, liked_by=user)
             post.like_count = post.like_count + 1
             like.save()
         post.save()
