@@ -1,5 +1,5 @@
 import os, json, random, string, sys
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.core.files import File
@@ -9,7 +9,7 @@ import requests
 from mynetwork.models import UserProfile,Post
 from mynetwork.serializers import UserSerializer, PostSerializer
 
-emails = ['alex@alexmaccaw.com','Harlow@clearbit.com','steli@close.io']
+emails = ['alex@alexmaccaw.com', 'Harlow@clearbit.com', 'steli@close.io']
 module_dir = os.path.dirname(__file__)
 file_path = os.path.join(module_dir, 'config')
 with open(file_path) as f:
@@ -22,8 +22,8 @@ with open(file_path) as f:
 
 def signup_user(session, index):
     username = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(5))
-    session.post('http://localhost:8000/signup/',
-                            data={'username': username, 'password': username, 'email': emails[index]})
+    session.post('http://localhost:8000/signup/', data={'username': username,
+                                                        'password': username, 'email': emails[index]})
     session.post('http://localhost:8000/login/', data={'username': username, 'password': username})
 
 
@@ -78,12 +78,14 @@ class Bot(APIView):
             serializer = UserSerializer(u)
             session.post('http://localhost:8000/login/', data={'username': serializer.data['username'],
                                                                'password': serializer.data['username']})
-            count[user[0]] = count[user[0]]-1
             posts = Post.objects.filter(~Q(creator=u))
             serializer = PostSerializer(posts, many=True)
             post = random.choice(serializer.data)
             post_id = post['id']
-            session.post('http://localhost:8000/dashboard/', data={'id': post_id})
+            post_count = Post.objects.filter(creator=int(post['creator']), like_count=0).count()
+            if post_count > 0:
+                session.post('http://localhost:8000/dashboard/', data={'id': post_id})
+                count[user[0]] = count[user[0]] - 1
             s = Post.objects.filter(like_count=0)
             if s.count() == 0:
                 break
