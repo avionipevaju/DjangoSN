@@ -1,7 +1,9 @@
 from datetime import datetime
+import json
+import requests
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.response import Response
 from django.shortcuts import render,redirect
 from django.db import IntegrityError
 from django.http import HttpResponse
@@ -80,9 +82,6 @@ class Profile(APIView):
 
 
 class Login(APIView):
-    #permission_classes = (IsAuthenticated,)
-    #authentication_classes = (JSONWebTokenAuthentication,)
-
     def post(self, request):
         try:
             user = UserProfile.objects.get(username=request.POST['username'])
@@ -96,6 +95,13 @@ class Login(APIView):
             serializer = UserSerializer(user)
             request.session['user'] = serializer.data
             request.session['error'] = ' '
+            session = requests.session()
+            r = session.post('http://localhost:8000/api-token-auth/', data={'username': user.username,
+                                                                            'password': request.POST['password']})
+            token = (json.loads(r.text))['token']
+            headers = dict(Authorization='Bearer'+token)
+            r = requests.get('http://localhost:8000/dashboard/', headers=headers)
+            #return HttpResponse(r)
             return redirect('dashboard')
         else:
             request.session['error'] = 'Wrong credentials'
@@ -103,6 +109,7 @@ class Login(APIView):
 
 
 class Dashboard(APIView):
+    #authentication_classes = (JSONWebTokenAuthentication,)
     def get(self, request):
         if request.GET.get('logout', False) is not False:
             request.session['user'] = None

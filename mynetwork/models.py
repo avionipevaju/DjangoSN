@@ -11,7 +11,7 @@ class Post(models.Model):
     creator = models.ForeignKey(UserProfile)
     timestamp = models.CharField(max_length=128)
     content = models.CharField(max_length=128)
-    like_count = models.IntegerField(null=True, blank=True,default=0)
+    like_count = models.IntegerField(null=True, blank=True, default=0)
 
     def get_username(self):
         return self.creator
