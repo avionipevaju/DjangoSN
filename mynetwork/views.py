@@ -1,7 +1,5 @@
 from datetime import datetime
 from rest_framework.views import APIView
-from rest_framework_jwt.settings import api_settings
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from django.shortcuts import render,redirect
@@ -12,32 +10,31 @@ import clearbit
 from .models import UserProfile,Post,Like
 from .serializers import UserSerializer,PostSerializer
 
+
 class Home(APIView):
-   def get(self, request):
-
-       if request.session.get('user') != None:
-           return redirect('dashboard')
-
-       error = request.session.get('error')
-       if error != None:
-           return render(request, 'index.html', {'error':error})
-       else:
-           return render(request, 'index.html')
+    def get(self, request):
+        if request.session.get('user') is not None:
+            return redirect('dashboard')
+        error = request.session.get('error')
+        if error is not None:
+            return render(request, 'index.html', {'error': error})
+        else:
+            return render(request, 'index.html')
 
 
 class Signup(APIView):
-    def get(self,request):
+    def get(self, request):
         return render(request, 'signup.html')
 
     def post(self, request):
         apikey = '49f3182ed78514853b35649a89d11bd29e2650fe'
         clearbit.key = 'sk_1d89e1a6b67c5e4e6934cf11d0460bea'
 
-        hunter=PyHunter(apikey)
-        email=request.POST['email']
+        hunter = PyHunter(apikey)
+        email = request.POST['email']
 
         if request.POST['email'] == '' or request.POST['username'] == '' or request.POST['password'] == '':
-            return render(request, 'signup.html', {'error':'Form not filled correctly'})
+            return render(request, 'signup.html', {'error': 'Form not filled correctly'})
 
         result = hunter.email_verifier(email)
 
@@ -53,9 +50,9 @@ class Signup(APIView):
                 avatar = lookup['person']['avatar']
 
                 new_user = UserProfile(
-                    username=request.POST['username'],email=mail,
-                    first_name=first_name,last_name=last_name,
-                    avatar=avatar,location=location)
+                    username=request.POST['username'], email=mail,
+                    first_name=first_name, last_name=last_name,
+                    avatar=avatar, location=location)
                 new_user.set_password(request.POST['password'])
 
                 try:
@@ -63,7 +60,8 @@ class Signup(APIView):
                     request.session['user'] = serializer.data
                     new_user.save()
                 except IntegrityError:
-                    return render(request, 'signup.html', {'error': 'User with the same username or email alerady exists'})
+                    return render(request, 'signup.html',
+                                  {'error': 'User with the same username or email already exists'})
                 return redirect('index')
             else:
                 return HttpResponse('NOT FOUND')
@@ -72,12 +70,14 @@ class Signup(APIView):
 
 
 class Profile(APIView):
-    def get(self,request):
-        currentUser = request.session.get('user')
+    def get(self, request):
+        current_user = request.session.get('user')
         return render(
             request, 'profile.html',
-            {'email': currentUser['email'], 'full_name': currentUser['first_name']+' '+currentUser['last_name'],
-            'location': currentUser['location'], 'avatar': currentUser['avatar'],'username': currentUser['username']})
+            {'email': current_user['email'], 'full_name': current_user['first_name']+' '+current_user['last_name'],
+             'location': current_user['location'], 'avatar': current_user['avatar'],
+             'username': current_user['username']})
+
 
 class Login(APIView):
     #permission_classes = (IsAuthenticated,)
@@ -85,7 +85,7 @@ class Login(APIView):
 
     def post(self, request):
         try:
-           user = UserProfile.objects.get(username=request.POST['username'])
+            user = UserProfile.objects.get(username=request.POST['username'])
         except UserProfile.DoesNotExist:
             request.session['error'] = 'Not registered. Please Sign up'
             return redirect('index')
@@ -101,24 +101,26 @@ class Login(APIView):
             request.session['error'] = 'Wrong credentials'
             return redirect('index')
 
+
 class Dashboard(APIView):
     def get(self, request):
-        if request.GET.get('logout',False) != False:
+        if request.GET.get('logout', False) is not False:
             request.session['user'] = None
             return redirect('index')
 
-        currentUser = request.session.get('user')
+        current_user = request.session.get('user')
         post_list = Post.objects.all()
-        return render(request, 'dashboard.html', {'post_list': post_list, 'username': currentUser['username'],'avatar':currentUser['avatar']})
+        return render(request, 'dashboard.html', {'post_list': post_list, 'username': current_user['username'],
+                                                  'avatar': current_user['avatar']})
 
-    def post(self,request):
+    def post(self, request):
         post = Post.objects.get(id=request.POST['id'])
-        current_user=request.session.get('user')
+        current_user = request.session.get('user')
         user = UserProfile.objects.get(id=current_user['id'])
         if post.creator == user:
             return redirect('dashboard')
         try:
-            like=Like.objects.get(post=post, liked_by=user)
+            like = Like.objects.get(post=post, liked_by=user)
             post.like_count = post.like_count - 1
             like.delete()
         except Like.DoesNotExist:
@@ -128,11 +130,12 @@ class Dashboard(APIView):
         post.save()
         return redirect('dashboard')
 
+
 class CreatePost(APIView):
-    def post(self,request):
-        currentUser = request.session.get('user')
+    def post(self, request):
+        current_user = request.session.get('user')
         content = request.POST['post']
-        user = UserProfile.objects.get(id=currentUser['id'])
+        user = UserProfile.objects.get(id=current_user['id'])
         timestamp = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         new_post = Post(content=content, timestamp=timestamp, creator=user)
         new_post.save()
